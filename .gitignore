@@ -1,0 +1,11 @@
+################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/DemoSunAndEarthWithGLSL/auxiliary
+DemoSunAndEarthWithGLSL/.vs/
+DemoSunAndEarthWithGLSL/DemoSunAndEarthWithGLSL/Debug/
+DemoSunAndEarthWithGLSL/DemoSunAndEarthWithGLSL/x64/
+DemoSunAndEarthWithGLSL/DemoSunAndEarthWithGLSL.VC.VC.opendb
+DemoSunAndEarthWithGLSL/DemoSunAndEarthWithGLSL.VC.db
+DemoSunAndEarthWithGLSL/bin/
