@@ -55,13 +55,13 @@ int main(void)
 	glScalef(0.1, 0.1, 1);    //[-1,1] -->[-10,10]  ÆÁÄ»×ø±ê·¶Î§
 
 	float angle = 0;
-
+	float angleMoon = 0;
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		angle += 1;
 
-		glClearColor(1.0, 1.0, 1.0, 0);
+		glClearColor(0.0, 0.0, 0.0, 0);
 
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -78,6 +78,18 @@ int main(void)
 			glTranslatef(0, 5, 0);
 			glScalef(0.6, 0.6, 0.6);
 			DrawCircle(0, 0.3, 1);
+
+			//! »æÖÆÔÂÁÁ
+			{
+				glPushMatrix();
+				glRotatef(angleMoon, 0, 0, 1);
+				glTranslatef(0, 3, 0);
+				glScalef(0.5, 0.5, 1);
+				DrawCircle(0.5, 0.5, 0.5);
+				glPopMatrix();
+				angleMoon += 3;
+			}
+
 			glPopMatrix();
 		}
 		/* Swap front and back buffers */
