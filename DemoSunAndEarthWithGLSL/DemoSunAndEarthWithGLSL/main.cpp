@@ -1,7 +1,8 @@
 #include "gl/glew.h"
 #include <GLFW/glfw3.h>
 #include "math.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 #include <windows.h>
 
 #include <iostream>
@@ -51,27 +52,54 @@ const GLfloat colors[] = {
 	0.0f, 1.0f, 0.0f
 };
 
-const GLchar* vertex120 = R"END(
-#version 120
-attribute vec4 inColor;
-attribute vec4 inPosition;
-uniform mat4 matrix;
-varying vec4 outColor;
-void main()
-{
-	outColor = inColor;
-	gl_Position = inPosition * matrix;
-}
-)END";
+//const GLchar* vertex120 = R"END(
+//#version 120
+//attribute vec4 inColor;
+//attribute vec4 inPosition;
+//uniform mat4 matrix;
+//varying vec4 outColor;
+//void main()
+//{
+//	outColor = inColor;
+//	gl_Position = inPosition * matrix;
+//}
+//)END";
+//
+//const GLchar* raster120 = R"END(
+//#version 120
+//varying vec4 outColor;
+//void main()
+//{
+//	gl_FragColor = outColor;
+//}
+//)END";
 
-const GLchar* raster120 = R"END(
-#version 120
-varying vec4 outColor;
-void main()
+char* readShaderSource(const char *fileName)
 {
-	gl_FragColor = outColor;
+	FILE *fp;
+	char *content = NULL;
+	int count = 0;
+
+	if (fileName != NULL)
+	{
+		fp = fopen(fileName, "rt");
+
+		if (fp != NULL)
+		{
+			fseek(fp, 0, SEEK_END);
+			count = ftell(fp);
+			rewind(fp);
+			if (count > 0)
+			{
+				content = (char *)malloc(sizeof(char) * (count + 1));
+				count = fread(content, sizeof(char), count, fp);
+				content[count] = NULL;
+			}
+			fclose(fp);
+		}
+	}
+	return content;
 }
-)END";
 
 int main(int argc, char *argv[])
 {
@@ -111,6 +139,8 @@ int main(int argc, char *argv[])
 
 	//!1、 顶点着色器
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	char* vertStr = readShaderSource("toon.vert");
+	const char* vertex120 = vertStr;
 	glShaderSource(vertexShader, 1, &vertex120, 0);
 	glCompileShader(vertexShader);
 
@@ -125,6 +155,8 @@ int main(int argc, char *argv[])
 
 	//!2、 片元着色器
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	char* fragStr = readShaderSource("toon.frag");
+	const char* raster120 = fragStr;
 	glShaderSource(fragmentShader, 1, &raster120, 0);
 	glCompileShader(fragmentShader);
 
@@ -163,7 +195,7 @@ int main(int argc, char *argv[])
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, colorsBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(colorsBuffer), colors, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
 
 	//5、locattion
 	GLint attribPosition = glGetAttribLocation(shaderProgram, "inPosition");
@@ -177,14 +209,14 @@ int main(int argc, char *argv[])
 	glVertexAttribPointer(attribColor, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	//!6\ uniforms
-	GLuint attributeMatrix = glGetUniformLocation(shaderProgram, "matrix");
+	//GLuint attributeMatrix = glGetUniformLocation(shaderProgram, "matrix");
 
 	float alpha = 0;
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
-		glClearColor(0.0, 0.0, 0.0, 0);
+		glClearColor(1.0, 0.0, 0.0, 0);
 
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -200,7 +232,7 @@ int main(int argc, char *argv[])
 			0,    0, 1, 0,
 			0,    0, 0, 1
 		};
-		glUniformMatrix4fv(attributeMatrix, 1, GL_FALSE, matrix);
+		//glUniformMatrix4fv(attributeMatrix, 1, GL_FALSE, matrix);
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
