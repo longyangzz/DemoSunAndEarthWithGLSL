@@ -7,5 +7,5 @@ varying vec4 outColor;
 void main()
 {
 	outColor = inColor;
-	gl_Position = inPosition;
+	gl_Position = inPosition * matrix;
 }

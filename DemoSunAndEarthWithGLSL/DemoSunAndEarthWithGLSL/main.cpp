@@ -52,27 +52,27 @@ const GLfloat colors[] = {
 	0.0f, 1.0f, 0.0f
 };
 
-//const GLchar* vertex120 = R"END(
-//#version 120
-//attribute vec4 inColor;
-//attribute vec4 inPosition;
-//uniform mat4 matrix;
-//varying vec4 outColor;
-//void main()
-//{
-//	outColor = inColor;
-//	gl_Position = inPosition * matrix;
-//}
-//)END";
-//
-//const GLchar* raster120 = R"END(
-//#version 120
-//varying vec4 outColor;
-//void main()
-//{
-//	gl_FragColor = outColor;
-//}
-//)END";
+const GLchar* vertex120 = R"END(
+#version 120
+attribute vec4 inColor;
+attribute vec4 inPosition;
+uniform mat4 matrix;
+varying vec4 outColor;
+void main()
+{
+	outColor = inColor;
+	gl_Position = inPosition;
+}
+)END";
+
+const GLchar* raster120 = R"END(
+#version 120
+varying vec4 outColor;
+void main()
+{
+	gl_FragColor = outColor;
+}
+)END";
 
 char* readShaderSource(const char *fileName)
 {
@@ -209,14 +209,14 @@ int main(int argc, char *argv[])
 	glVertexAttribPointer(attribColor, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	//!6\ uniforms
-	//GLuint attributeMatrix = glGetUniformLocation(shaderProgram, "matrix");
+	GLuint attributeMatrix = glGetUniformLocation(shaderProgram, "matrix");
 
 	float alpha = 0;
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
-		glClearColor(1.0, 0.0, 0.0, 0);
+		glClearColor(0.0, 0.0, 0.0, 0);
 
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -232,7 +232,7 @@ int main(int argc, char *argv[])
 			0,    0, 1, 0,
 			0,    0, 0, 1
 		};
-		//glUniformMatrix4fv(attributeMatrix, 1, GL_FALSE, matrix);
+		glUniformMatrix4fv(attributeMatrix, 1, GL_FALSE, matrix);
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
