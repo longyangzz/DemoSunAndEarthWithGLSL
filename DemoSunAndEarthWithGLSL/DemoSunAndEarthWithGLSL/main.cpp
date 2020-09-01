@@ -210,6 +210,10 @@ int main(int argc, char *argv[])
 
 	//!6\ uniforms
 	GLuint attributeMatrix = glGetUniformLocation(shaderProgram, "matrix");
+	GLuint attributeiGlobalTime = glGetUniformLocation(shaderProgram, "iGlobalTime");
+	GLuint attributeiResolution = glGetUniformLocation(shaderProgram, "iResolution");
+	
+	glUniform3f(attributeiResolution, 800.0f, 800.0f, 800.0f);
 
 	float alpha = 0;
 
@@ -233,7 +237,7 @@ int main(int argc, char *argv[])
 			0,    0, 0, 1
 		};
 		glUniformMatrix4fv(attributeMatrix, 1, GL_FALSE, matrix);
-
+		glUniform1f(attributeiGlobalTime, alpha);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		/* Swap front and back buffers */
