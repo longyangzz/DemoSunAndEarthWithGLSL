@@ -228,7 +228,7 @@ int main(int argc, char *argv[])
 		//! Í¼Ôª»æÖÆ
 		float sa = 0.5 * sin(alpha);
 		float ca = 0.5 * cos(alpha);
-		alpha += 0.1;
+		alpha += 0.0;
 
 		const GLfloat matrix[] = {
 			sa, -ca, 0, 0,
